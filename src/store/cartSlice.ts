@@ -18,8 +18,20 @@ interface CartState {
   items: CartItem[];
 }
 
+const loadCartState = (): CartItem[] => {
+  try {
+    const serializedState = localStorage.getItem('cart_items');
+    if (serializedState === null) {
+      return [];
+    }
+    return JSON.parse(serializedState);
+  } catch {
+    return [];
+  }
+};
+
 const initialState: CartState = {
-  items: [],
+  items: loadCartState(),
 };
 
 const cartSlice = createSlice({
