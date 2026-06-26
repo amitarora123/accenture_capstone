@@ -1,0 +1,150 @@
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 40px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.leftCol {
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pizzaName {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.badgeAndPrice {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.veg {
+  background-color: var(--veg-green);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--veg-green);
+}
+
+.nonveg {
+  background-color: var(--nonveg-red);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--nonveg-red);
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-primary);
+  border-top: 1px dashed var(--border-color);
+  padding-top: 12px;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.rightCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pizzaImg {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.card:hover .pizzaImg {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.addButton {
+  background-color: var(--primary);
+  color: #111115;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 0;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.addButton:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    flex-direction: column;
+  }
+  .rightCol {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .addButton {
+    width: auto;
+    padding: 10px 24px;
+  }
+}

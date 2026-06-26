@@ -1,0 +1,93 @@
+.header {
+  background-color: var(--dark-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 60px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logoImg {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.brandName {
+  color: var(--white);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.navLink {
+  color: #94a3b8;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--transition);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover {
+  color: var(--white);
+}
+
+.activeLink {
+  color: var(--white);
+  border-bottom: 2px solid var(--primary);
+}
+
+.cartButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--primary);
+  color: #111115;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 15px;
+  transition: var(--transition);
+}
+
+.cartButton:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.cartBadge {
+  background-color: #111115;
+  color: var(--white);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .nav {
+    gap: 20px;
+  }
+}

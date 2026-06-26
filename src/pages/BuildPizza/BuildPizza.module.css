@@ -1,0 +1,143 @@
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 40px;
+  background-color: var(--white);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-color);
+}
+
+.row {
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.row:hover {
+  background-color: #f8fafc;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.tdImg {
+  width: 80px;
+  padding: 10px;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.tdNamePrice {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toppingName {
+  font-weight: 600;
+}
+
+.toppingPrice {
+  color: var(--text-secondary);
+}
+
+.tdAction {
+  width: 100px;
+  padding: 12px;
+  text-align: center;
+}
+
+.actionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.addLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.totalSection {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0000ff; /* Matches the blue text in the screenshot */
+  letter-spacing: 0.5px;
+}
+
+.buildButton {
+  background-color: var(--primary);
+  color: #111115;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 48px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  margin-top: 12px;
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.buildButton:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 20px;
+  }
+  .tdNamePrice {
+    padding: 12px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
