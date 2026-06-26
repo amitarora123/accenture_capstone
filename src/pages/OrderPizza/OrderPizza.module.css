@@ -136,15 +136,47 @@
 }
 
 @media (max-width: 576px) {
+  .container {
+    padding: 0 16px;
+    margin: 15px auto;
+  }
   .card {
-    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+  }
+  .leftCol {
+    flex: 1.4;
+    gap: 8px;
+  }
+  .pizzaName {
+    font-size: 18px;
+  }
+  .price {
+    font-size: 16px;
+  }
+  .description {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .detailsList {
+    font-size: 12px;
+    padding-top: 8px;
+    gap: 4px;
   }
   .rightCol {
-    flex-direction: row;
-    justify-content: space-between;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+  }
+  .pizzaImg {
+    width: 90px;
+    height: 90px;
   }
   .addButton {
-    width: auto;
-    padding: 10px 24px;
+    font-size: 13px;
+    padding: 8px 12px;
+    width: 100%;
   }
 }

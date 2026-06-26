@@ -119,3 +119,32 @@
     font-size: 28px;
   }
 }
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+    margin: 10px;
+    gap: 24px;
+  }
+  .title {
+    font-size: 24px;
+  }
+  .storyText {
+    font-size: 14px;
+    text-align: left;
+    gap: 12px;
+  }
+  .sectionHeading {
+    font-size: 20px;
+  }
+  .sectionDesc {
+    font-size: 14px;
+  }
+  .stopwatchImage {
+    width: 120px;
+    height: 120px;
+  }
+  .deliveryText {
+    font-size: 22px;
+  }
+}

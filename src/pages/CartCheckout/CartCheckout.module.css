@@ -421,3 +421,93 @@
     width: 100%;
   }
 }
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 10px;
+    margin: 15px auto;
+  }
+  .card {
+    padding: 16px;
+  }
+  .cardTitle {
+    font-size: 18px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+  }
+  .cartItem {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding: 16px 0;
+    align-items: start;
+  }
+  .itemImage {
+    width: 60px;
+    height: 60px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  .itemDetails {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 4px;
+  }
+  .itemName {
+    font-size: 15px;
+  }
+  .deleteBtn {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: start;
+    padding: 4px;
+  }
+  .qtyContainer {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: start;
+    margin-top: 4px;
+  }
+  .qtyBtn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .qtyDisplay {
+    width: 32px;
+    height: 28px;
+    font-size: 13px;
+  }
+  .itemTotal {
+    grid-column: 3;
+    grid-row: 2;
+    align-self: center;
+    text-align: right;
+    min-width: auto;
+    font-size: 15px;
+  }
+  .subTotalText {
+    font-size: 16px;
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+  .btnGroup {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 24px 16px;
+    gap: 16px;
+  }
+  .modalTitle {
+    font-size: 20px;
+  }
+  .modalDesc {
+    font-size: 14px;
+  }
+}

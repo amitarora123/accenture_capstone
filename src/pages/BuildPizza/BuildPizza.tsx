@@ -6,19 +6,19 @@ import { addToCart } from '../../store/cartSlice';
 import styles from './BuildPizza.module.css';
 
 const TOPPING_EMOJIS: Record<string, string> = {
-  'pepperoni': '🍕',
-  'mushroom': '🍄',
-  'black-beans': '🫘',
-  'black-olive': '🫒',
-  'green-olive': '🫒',
-  'jalapeno': '🌶️',
-  'chicken': '🍗',
-  'tomato': '🍅',
-  'red-peprika': '🌶️',
-  'paneer': '🧀',
-  'fried-onion': '🧅',
-  'capsicum': '🫑',
-  'sweet-corn': '🌽',
+  '101': '🍕', // Pepperoni
+  '102': '🍄', // Mushroom
+  '103': '🫘', // Black beans
+  '104': '🫒', // Black olive
+  '105': '🫒', // Green olive
+  '106': '🌶️', // Jalapeno
+  '107': '🍗', // Chicken
+  '108': '🍅', // Tomato
+  '119': '🌶️', // Red peprika
+  '110': '🧀', // Paneer
+  '111': '🧅', // Fried Onion
+  '112': '🫑', // Capsicum
+  '114': '🌽', // Sweet corn
 };
 
 export const BuildPizza: React.FC = () => {
@@ -32,7 +32,7 @@ export const BuildPizza: React.FC = () => {
     .map((t) => t.id);
 
   const [selectedToppingIds, setSelectedToppingIds] = useState<string[]>(
-    defaultCheckedIds.length > 0 ? defaultCheckedIds : ['chicken', 'tomato']
+    defaultCheckedIds.length > 0 ? defaultCheckedIds : ['107', '108']
   );
 
   const handleToggleTopping = (id: string) => {
@@ -58,7 +58,7 @@ export const BuildPizza: React.FC = () => {
     }
 
     const hasMeat = selectedToppingIds.some(
-      (id) => id === 'chicken' || id === 'pepperoni'
+      (id) => id === '107' || id === '101'
     );
 
     dispatch(

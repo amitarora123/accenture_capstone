@@ -132,12 +132,52 @@
 
 @media (max-width: 576px) {
   .container {
-    padding: 20px;
+    padding: 16px;
+    margin: 10px;
+    gap: 16px;
+  }
+  .title {
+    font-size: 24px;
+  }
+  .subtitle {
+    font-size: 13px;
+  }
+  .tdImg {
+    width: 60px;
+    padding: 6px;
+  }
+  .iconWrapper {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
   }
   .tdNamePrice {
-    padding: 12px 10px;
+    padding: 10px 8px;
     flex-direction: column;
     align-items: flex-start;
+    gap: 2px;
+    font-size: 14px;
+  }
+  .tdAction {
+    width: 80px;
+    padding: 6px;
+  }
+  .actionWrapper {
     gap: 4px;
+  }
+  .checkbox {
+    width: 14px;
+    height: 14px;
+  }
+  .addLabel {
+    font-size: 13px;
+  }
+  .totalSection {
+    font-size: 18px;
+  }
+  .buildButton {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
   }
 }

@@ -83,11 +83,35 @@
 
 @media (max-width: 768px) {
   .header {
-    padding: 12px 20px;
-    flex-direction: column;
-    gap: 12px;
+    padding: 12px 24px;
   }
   .nav {
     gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .logoSection {
+    order: 1;
+  }
+  .cartButton {
+    order: 2;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  .cartButton span:not(.cartBadge) {
+    display: none;
+  }
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+    gap: 24px;
   }
 }
