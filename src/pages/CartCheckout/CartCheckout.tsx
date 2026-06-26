@@ -226,11 +226,7 @@ export const CartCheckout: React.FC = () => {
                         title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
                       />
                     </div>
-                    {item.type === 'standard' ? (
-                      <span className={styles.itemPrice}>₹{item.basePrice}</span>
-                    ) : (
-                      <span className={styles.itemPrice}>₹0.00</span>
-                    )}
+                    <span className={styles.itemPrice}>₹{item.basePrice.toFixed(2)}</span>
 
                     {item.type === 'custom' && item.selectedToppings.length > 0 && (
                       <div className={styles.customToppingsText}>
@@ -257,7 +253,7 @@ export const CartCheckout: React.FC = () => {
                   </div>
 
                   <div className={styles.itemTotal}>
-                    ₹{(item.quantity * (item.type === 'standard' ? item.basePrice : item.toppingsPrice)).toFixed(2)}
+                    ₹{(item.quantity * (item.basePrice + item.toppingsPrice)).toFixed(2)}
                   </div>
 
                   <button
@@ -271,7 +267,7 @@ export const CartCheckout: React.FC = () => {
               ))}
 
               <div className={styles.subTotalText}>
-                Sub Total : ₹{pizzaTotal.toFixed(2)}
+                Sub Total : ₹{grandTotal.toFixed(2)}
               </div>
             </div>
           )}

@@ -41,10 +41,14 @@ export const BuildPizza: React.FC = () => {
     );
   };
 
+  const PIZZA_BASE_PRICE = 50;
+
   // Calculate live cost: sum up selected topping prices
-  const totalCost = toppings
+  const toppingsCost = toppings
     .filter((t) => selectedToppingIds.includes(t.id))
     .reduce((sum, t) => sum + t.price, 0);
+
+  const totalCost = PIZZA_BASE_PRICE + toppingsCost;
 
   const handleBuildPizza = () => {
     const selectedToppingsList = toppings.filter((t) =>
@@ -66,8 +70,8 @@ export const BuildPizza: React.FC = () => {
         id: `custom-${Date.now()}`,
         type: 'custom',
         name: 'Build Your Own Pizza',
-        basePrice: 0,
-        toppingsPrice: totalCost,
+        basePrice: PIZZA_BASE_PRICE,
+        toppingsPrice: toppingsCost,
         image: '/pizza_menu_default.png',
         isVeg: !hasMeat,
         selectedToppings: selectedToppingsList,
