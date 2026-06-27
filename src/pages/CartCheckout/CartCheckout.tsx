@@ -8,6 +8,7 @@ import {
   clearCart,
 } from '../../store/cartSlice';
 import { Trash2, ChevronDown, ChevronUp, Tag, Percent } from 'lucide-react';
+import { addOrder } from '../../store/ordersSlice';
 import styles from './CartCheckout.module.css';
 
 interface FormState {
@@ -276,22 +277,27 @@ export const CartCheckout: React.FC = () => {
     if (isValid) {
       const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
       
-      // Redirect to the TrackOrder page, sending details as location state
-      navigate('/track', {
-        state: {
-          orderId,
-          name: form.name,
-          address: form.address,
-          phone: form.phone,
-          amount: grandTotal,
-          items: cartItems.map((item) => ({
-            name: item.name,
-            quantity: item.quantity,
-            size: item.size,
-            crust: item.crust,
-          })),
-        },
-      });
+      const newOrder = {
+        id: orderId,
+        name: form.name,
+        address: form.address,
+        phone: form.phone,
+        amount: grandTotal,
+        items: cartItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          size: item.size,
+          crust: item.crust,
+        })),
+        status: 'received' as const,
+        createdAt: new Date().toISOString(),
+      };
+
+      // Dispatch order to the store
+      dispatch(addOrder(newOrder));
+
+      // Redirect to the TrackOrder page with orderId query param
+      navigate(`/track?orderId=${orderId}`);
 
       // Clear the cart upon placing the order
       dispatch(clearCart());

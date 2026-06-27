@@ -1,0 +1,637 @@
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 40px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shieldIcon {
+  color: var(--primary);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+  transition: var(--transition);
+}
+
+.tabBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.activeTab {
+  background-color: var(--primary);
+  color: #111115;
+  border-color: var(--primary);
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--nonveg-red);
+  border: 1px solid var(--nonveg-red);
+  background-color: transparent;
+  transition: var(--transition);
+}
+
+.logoutBtn:hover {
+  background-color: #fef2f2;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.noDataCard {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 60px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 15px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.orderCard {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.orderCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.orderId {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+}
+
+.orderDate {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  display: block;
+}
+
+.statusUpdateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.statusLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.statusSelect {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.statusSelect.received {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.statusSelect.preparing {
+  background-color: #faf5ff;
+  color: #7e22ce;
+  border-color: #e9d5ff;
+}
+
+.statusSelect.baking {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border-color: #fed7aa;
+}
+
+.statusSelect.out_for_delivery {
+  background-color: #fef1f2;
+  color: #be123c;
+  border-color: #fecdd3;
+}
+
+.statusSelect.delivered {
+  background-color: #f0fdf4;
+  color: var(--veg-green);
+  border-color: #bbf7d0;
+}
+
+.orderBody {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.subhead {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.col p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.itemOptions {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.orderTotal {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.orderTotal span {
+  color: var(--primary-hover);
+  font-size: 18px;
+}
+
+.orderFooter {
+  padding-top: 16px;
+}
+
+.trackLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  transition: var(--transition);
+}
+
+.trackLink:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Tab Content Menu Grid */
+.tabContentMenu {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.formCard, .menuListCard {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  outline: none;
+  font-family: var(--font-family);
+  transition: var(--transition);
+}
+
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.submitBtn {
+  background-color: var(--primary);
+  color: #111115;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+}
+
+.submitBtn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.errorMsg {
+  background-color: #fef2f2;
+  color: var(--nonveg-red);
+  border: 1px solid #fee2e2;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.successMsg {
+  background-color: #f0fdf4;
+  color: var(--veg-green);
+  border: 1px solid #dcfce7;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* Pizza List Table */
+.pizzaTableWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.pizzaTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.pizzaTable th, .pizzaTable td {
+  padding: 14px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pizzaTable th {
+  background-color: var(--light-bg);
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.pizzaNameCol {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.pizzaThumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+}
+
+.pizzaTableName {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pizzaTableDesc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  line-height: 1.4;
+  max-width: 180px;
+}
+
+.typeBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.typeBadge.veg {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: var(--veg-green);
+}
+
+.typeBadge.non-veg {
+  background-color: rgba(192, 57, 43, 0.1);
+  color: var(--nonveg-red);
+}
+
+.pizzaTablePrice {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pizzaTableDetails {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.deleteBtn {
+  color: var(--nonveg-red);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteBtn:hover {
+  background-color: #fef2f2;
+}
+
+/* ADMIN LOGIN SCREEN STYLES */
+.loginContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.loginCard {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.loginIconWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(243, 156, 18, 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+}
+
+.loginTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.loginSubtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.loginFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loginLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.loginInput {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  outline: none;
+  font-family: var(--font-family);
+  transition: var(--transition);
+}
+
+.loginInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
+}
+
+.loginSubmitBtn {
+  background-color: var(--primary);
+  color: #111115;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  width: 100%;
+  margin-top: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.loginSubmitBtn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.loginErrorMsg {
+  background-color: #fef2f2;
+  color: var(--nonveg-red);
+  border: 1px solid #fee2e2;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.gradingTip {
+  margin-top: 24px;
+  background-color: var(--light-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+}
+
+.gradingTip span {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.gradingTip code {
+  font-family: monospace;
+  background-color: var(--white);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  font-weight: 600;
+}
+
+@media (max-width: 992px) {
+  .tabContentMenu {
+    grid-template-columns: 1fr;
+  }
+  .orderBody {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+    margin: 15px auto;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

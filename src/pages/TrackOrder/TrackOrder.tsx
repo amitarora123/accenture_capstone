@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../store';
 import {
   ClipboardCheck,
   ChefHat,
@@ -13,59 +14,51 @@ import {
 } from 'lucide-react';
 import styles from './TrackOrder.module.css';
 
-interface OrderItem {
-  name: string;
-  quantity: number;
-  size: string;
-  crust: string;
-}
-
-interface OrderState {
-  orderId: string;
-  name: string;
-  address: string;
-  phone: string;
-  amount: number;
-  items: OrderItem[];
-}
-
 const STAGES = [
-  { label: 'Order Received', desc: 'We have received your order.', icon: ClipboardCheck },
-  { label: 'Preparing', desc: 'Our chefs are spinning the fresh dough.', icon: ChefHat },
-  { label: 'Baking', desc: 'Your pizza is baking in our wood-fired oven.', icon: Flame },
-  { label: 'Out for Delivery', desc: 'Our rider is speeding to your address.', icon: Bike },
-  { label: 'Delivered', desc: 'Enjoy your hot, fresh pizza!', icon: CheckCircle2 },
+  { label: 'Order Received', desc: 'We have received your order.', icon: ClipboardCheck, statusKey: 'received' },
+  { label: 'Preparing', desc: 'Our chefs are spinning the fresh dough.', icon: ChefHat, statusKey: 'preparing' },
+  { label: 'Baking', desc: 'Your pizza is baking in our wood-fired oven.', icon: Flame, statusKey: 'baking' },
+  { label: 'Out for Delivery', desc: 'Our rider is speeding to your address.', icon: Bike, statusKey: 'out_for_delivery' },
+  { label: 'Delivered', desc: 'Enjoy your hot, fresh pizza!', icon: CheckCircle2, statusKey: 'delivered' },
 ];
 
 export const TrackOrder: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const orderData = location.state as OrderState | undefined;
 
-  const [currentStep, setCurrentStep] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(45 * 60); // 45 minutes in seconds
+  // Extract orderId from search query parameter (?orderId=ORD-XXXXXX)
+  const queryParams = new URLSearchParams(location.search);
+  const orderId = queryParams.get('orderId');
 
-  // Auto-progress simulated steps every 15 seconds
+  // Look up order in Redux store
+  const orderData = useAppSelector((state) =>
+    state.orders.items.find((o) => o.id === orderId)
+  );
+
+  const getStepIndex = (status: string) => {
+    switch (status) {
+      case 'received': return 0;
+      case 'preparing': return 1;
+      case 'baking': return 2;
+      case 'out_for_delivery': return 3;
+      case 'delivered': return 4;
+      default: return 0;
+    }
+  };
+
+  const currentStep = orderData ? getStepIndex(orderData.status) : 0;
+  const [timeLeft, setTimeLeft] = useState(45 * 60);
+
+  // Countdown timer effect (only ticks down if order is active and not delivered)
   useEffect(() => {
-    if (!orderData || currentStep >= STAGES.length - 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentStep((prev) => Math.min(prev + 1, STAGES.length - 1));
-    }, 15000); // 15 seconds
-
-    return () => clearInterval(interval);
-  }, [currentStep, orderData]);
-
-  // Countdown timer effect
-  useEffect(() => {
-    if (!orderData || timeLeft <= 0 || currentStep === STAGES.length - 1) return;
+    if (!orderData || timeLeft <= 0 || orderData.status === 'delivered') return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, currentStep, orderData]);
+  }, [timeLeft, orderData]);
 
   if (!orderData) {
     return (
@@ -88,14 +81,6 @@ export const TrackOrder: React.FC = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, STAGES.length - 1));
-  };
-
-  const prevStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
   return (
     <div className={styles.container}>
       <button className={styles.backBtn} onClick={() => navigate('/')}>
@@ -105,12 +90,12 @@ export const TrackOrder: React.FC = () => {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Track Your Order</h1>
-          <p className={styles.orderIdLabel}>Order ID: {orderData.orderId}</p>
+          <p className={styles.orderIdLabel}>Order ID: {orderData.id}</p>
         </div>
         <div className={styles.timerCard}>
           <span className={styles.timerLabel}>Estimated Delivery</span>
           <span className={styles.timerValue}>
-            {currentStep === STAGES.length - 1 ? 'Delivered! 🎉' : formatTime(timeLeft)}
+            {orderData.status === 'delivered' ? 'Delivered! 🎉' : formatTime(timeLeft)}
           </span>
         </div>
       </div>
@@ -157,19 +142,6 @@ export const TrackOrder: React.FC = () => {
               </div>
             );
           })}
-        </div>
-
-        {/* Debug / simulation controls */}
-        <div className={styles.simulationControls}>
-          <span className={styles.simulationLabel}>Simulation Controls:</span>
-          <div className={styles.simulationBtnGroup}>
-            <button onClick={prevStep} disabled={currentStep === 0} className={styles.simBtn}>
-              Prev Step
-            </button>
-            <button onClick={nextStep} disabled={currentStep === STAGES.length - 1} className={styles.simBtn}>
-              Next Step
-            </button>
-          </div>
         </div>
       </div>
 
