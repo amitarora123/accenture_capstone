@@ -9,6 +9,7 @@ import Home from './pages/Home/Home';
 import OrderPizza from './pages/OrderPizza/OrderPizza';
 import BuildPizza from './pages/BuildPizza/BuildPizza';
 import CartCheckout from './pages/CartCheckout/CartCheckout';
+import TrackOrder from './pages/TrackOrder/TrackOrder';
 
 function AppContent() {
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ function AppContent() {
           <Route path="/order" element={<OrderPizza />} />
           <Route path="/build" element={<BuildPizza />} />
           <Route path="/cart" element={<CartCheckout />} />
+          <Route path="/track" element={<TrackOrder />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

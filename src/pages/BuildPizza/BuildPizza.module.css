@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 30px auto;
   padding: 40px;
   background-color: var(--white);
@@ -12,19 +12,207 @@
   animation: fadeIn 0.4s ease-out forwards;
 }
 
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+}
+
 .subtitle {
   font-size: 15px;
   color: var(--text-secondary);
   text-align: center;
   line-height: 1.6;
   max-width: 700px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.workspace {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Left Column - Pizza Canvas & Configs */
+.leftCol {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.canvasCard {
+  background-color: var(--light-bg);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  border: 1px solid var(--border-color);
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.pizzaBase {
+  border-radius: 50%;
+  background: #e5a93b; /* Dough outer crust */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), inset 0 -8px 12px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.regular {
+  width: 220px;
+  height: 220px;
+}
+
+.medium {
+  width: 260px;
+  height: 260px;
+}
+
+.large {
+  width: 300px;
+  height: 300px;
+}
+
+.cheeseBurstBorder {
+  border: 8px solid #f39c12;
+  animation: pulseCheese 2s infinite ease-in-out;
+}
+
+@keyframes pulseCheese {
+  0% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 0 0px rgba(243, 156, 18, 0.3); }
+  70% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 0 10px rgba(243, 156, 18, 0); }
+  100% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 0 0px rgba(243, 156, 18, 0); }
+}
+
+.pizzaCrust {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: #db8b27; /* Inner crust edge */
+  box-shadow: inset 0 4px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pizzaCheese {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5d061 40%, #e07a27 95%); /* Cheese and Tomato Sauce blend */
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.sprinkledTopping {
+  position: absolute;
+  font-size: 26px;
+  user-select: none;
+  pointer-events: none;
+  animation: popTopping 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popTopping {
+  from {
+    transform: translate(-50%, -50%) scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.canvasBadge {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background-color: var(--white);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.configCard {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.configTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.radioGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.radioLabel {
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radioLabel:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: rgba(243, 156, 18, 0.02);
+}
+
+.radioActive {
+  border-color: var(--primary);
+  color: #111115;
+  background-color: rgba(243, 156, 18, 0.08);
+}
+
+.radioInput {
+  display: none;
+}
+
+/* Right Column - Ingredients checklist */
+.rightCol {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .row {
@@ -41,43 +229,42 @@
 }
 
 .tdImg {
-  width: 80px;
-  padding: 10px;
+  width: 70px;
+  padding: 8px 12px;
   text-align: center;
 }
 
 .iconWrapper {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background-color: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .tdNamePrice {
-  padding: 12px 24px;
-  font-size: 15px;
-  font-weight: 600;
+  padding: 12px 16px;
+  font-size: 14px;
   color: var(--text-primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .toppingName {
   font-weight: 600;
+  display: block;
 }
 
 .toppingPrice {
   color: var(--text-secondary);
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 .tdAction {
-  width: 100px;
+  width: 110px;
   padding: 12px;
   text-align: center;
 }
@@ -88,40 +275,60 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.actionWrapper:hover {
+  border-color: var(--primary);
+  background-color: rgba(243, 156, 18, 0.02);
+}
+
+.actionActive {
+  background-color: rgba(243, 156, 18, 0.08);
+  border-color: var(--primary);
 }
 
 .checkbox {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   cursor: pointer;
   accent-color: var(--primary);
 }
 
 .addLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.actionActive .addLabel {
+  color: var(--primary-hover);
 }
 
 .totalSection {
-  margin-top: 16px;
-  font-size: 22px;
-  font-weight: 700;
-  color: #0000ff; /* Matches the blue text in the screenshot */
+  margin-top: 24px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e3a8a; /* Deep blue price styling */
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .buildButton {
   background-color: var(--primary);
   color: #111115;
   font-size: 16px;
-  font-weight: 700;
-  padding: 12px 48px;
-  border-radius: var(--radius-sm);
+  font-weight: 800;
+  padding: 14px 60px;
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   margin-top: 12px;
   transition: var(--transition);
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .buildButton:hover {
@@ -130,50 +337,58 @@
   box-shadow: var(--shadow-md);
 }
 
+@media (max-width: 992px) {
+  .workspace {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 30px;
+  }
+}
+
 @media (max-width: 576px) {
   .container {
-    padding: 16px;
+    padding: 20px 16px;
     margin: 10px;
     gap: 16px;
   }
   .title {
-    font-size: 24px;
+    font-size: 26px;
   }
   .subtitle {
     font-size: 13px;
   }
+  .canvasCard {
+    min-height: 300px;
+    padding: 20px;
+  }
+  .regular { width: 170px; height: 170px; }
+  .medium { width: 210px; height: 210px; }
+  .large { width: 240px; height: 240px; }
   .tdImg {
-    width: 60px;
+    width: 50px;
     padding: 6px;
   }
   .iconWrapper {
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
   .tdNamePrice {
     padding: 10px 8px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    font-size: 14px;
+    font-size: 13px;
   }
   .tdAction {
-    width: 80px;
+    width: 90px;
     padding: 6px;
   }
   .actionWrapper {
-    gap: 4px;
-  }
-  .checkbox {
-    width: 14px;
-    height: 14px;
+    padding: 4px 8px;
   }
   .addLabel {
-    font-size: 13px;
+    font-size: 11px;
   }
   .totalSection {
-    font-size: 18px;
+    font-size: 20px;
   }
   .buildButton {
     width: 100%;

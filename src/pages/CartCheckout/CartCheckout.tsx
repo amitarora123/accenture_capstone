@@ -7,7 +7,7 @@ import {
   updateQuantity,
   clearCart,
 } from '../../store/cartSlice';
-import { Trash2, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import { Trash2, ChevronDown, ChevronUp, Tag, Percent } from 'lucide-react';
 import styles from './CartCheckout.module.css';
 
 interface FormState {
@@ -30,9 +30,6 @@ export const CartCheckout: React.FC = () => {
   // Expanded state for the ingredients dropdown in the bill breakdown
   const [isIngredientsExpanded, setIsIngredientsExpanded] = useState(false);
   
-  // Checkout success modal state
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-
   // Billing form state
   const [form, setForm] = useState<FormState>({
     name: '',
@@ -43,18 +40,69 @@ export const CartCheckout: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Coupon / Promo Code States
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [couponSuccess, setCouponSuccess] = useState<string | null>(null);
+  const [showOffers, setShowOffers] = useState(false);
+
   // Calculations
   const pizzaTotal = cartItems.reduce(
     (sum, item) => sum + item.quantity * item.basePrice,
     0
   );
   
+  const sizeCrustTotal = cartItems.reduce(
+    (sum, item) => sum + item.quantity * (item.sizePrice + item.crustPrice),
+    0
+  );
+
   const ingredientsTotal = cartItems.reduce(
     (sum, item) => sum + item.quantity * item.toppingsPrice,
     0
   );
 
-  const grandTotal = pizzaTotal + ingredientsTotal;
+  const subTotal = pizzaTotal + sizeCrustTotal + ingredientsTotal;
+
+  // Coupon calculations
+  const getDiscountAmount = (): number => {
+    if (!appliedCoupon) return 0;
+
+    if (appliedCoupon === 'PIZZA20') {
+      return subTotal * 0.20;
+    }
+
+    if (appliedCoupon === 'FREEVEG') {
+      // Sum prices of veggie toppings (ID is not 101 Pepperoni and not 107 Chicken)
+      return cartItems.reduce((sum, item) => {
+        const vegToppingsCost = item.selectedToppings
+          .filter((t) => t.id !== '101' && t.id !== '107')
+          .reduce((s, t) => s + t.price, 0);
+        return sum + item.quantity * vegToppingsCost;
+      }, 0);
+    }
+
+    if (appliedCoupon === 'BOGO') {
+      const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      if (totalQty >= 2) {
+        // Find the base price of the cheapest pizza in the cart
+        const basePrices: number[] = [];
+        cartItems.forEach((item) => {
+          for (let i = 0; i < item.quantity; i++) {
+            basePrices.push(item.basePrice);
+          }
+        });
+        basePrices.sort((a, b) => a - b);
+        return basePrices[0];
+      }
+    }
+
+    return 0;
+  };
+
+  const discountAmount = getDiscountAmount();
+  const grandTotal = subTotal - discountAmount;
 
   // Aggregate custom ingredients in the cart for the dropdown breakdown
   interface AggregatedTopping {
@@ -67,7 +115,7 @@ export const CartCheckout: React.FC = () => {
   const getAggregatedToppings = (): AggregatedTopping[] => {
     const map: Record<string, AggregatedTopping> = {};
     cartItems.forEach((item) => {
-      if (item.type === 'custom') {
+      if (item.selectedToppings && item.selectedToppings.length > 0) {
         item.selectedToppings.forEach((topping) => {
           const key = topping.id;
           if (map[key]) {
@@ -107,7 +155,6 @@ export const CartCheckout: React.FC = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     
-    // Clear error dynamically as user types
     if (isSubmitted) {
       validateField(name, value);
     }
@@ -173,6 +220,51 @@ export const CartCheckout: React.FC = () => {
     return Object.keys(formErrors).length === 0;
   };
 
+  const handleApplyCoupon = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setCouponError(null);
+    setCouponSuccess(null);
+
+    const code = couponCode.trim().toUpperCase();
+    if (!code) {
+      setCouponError('Please enter a coupon code.');
+      return;
+    }
+
+    if (code === 'PIZZA20') {
+      setAppliedCoupon('PIZZA20');
+      setCouponSuccess('PIZZA20 coupon applied! 20% discount added.');
+    } else if (code === 'FREEVEG') {
+      const vegToppings = cartItems.some((item) =>
+        item.selectedToppings.some((t) => t.id !== '101' && t.id !== '107')
+      );
+      if (!vegToppings) {
+        setCouponError('FREEVEG applied, but no veggie toppings found in your cart.');
+        setAppliedCoupon('FREEVEG');
+      } else {
+        setAppliedCoupon('FREEVEG');
+        setCouponSuccess('FREEVEG applied! Veg toppings are now free.');
+      }
+    } else if (code === 'BOGO') {
+      const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      if (totalQty < 2) {
+        setCouponError('BOGO requires at least 2 pizzas in your cart.');
+      } else {
+        setAppliedCoupon('BOGO');
+        setCouponSuccess('BOGO applied! Cheapest pizza base is free.');
+      }
+    } else {
+      setCouponError('Invalid coupon code. Try PIZZA20, FREEVEG, or BOGO.');
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponSuccess(null);
+    setCouponError(null);
+    setCouponCode('');
+  };
+
   const handlePay = () => {
     if (cartItems.length === 0) {
       alert('Your cart is empty! Add pizzas before making a payment.');
@@ -182,20 +274,33 @@ export const CartCheckout: React.FC = () => {
     setIsSubmitted(true);
     const isValid = validateForm();
     if (isValid) {
-      setShowSuccessModal(true);
-    }
-  };
+      const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+      
+      // Redirect to the TrackOrder page, sending details as location state
+      navigate('/track', {
+        state: {
+          orderId,
+          name: form.name,
+          address: form.address,
+          phone: form.phone,
+          amount: grandTotal,
+          items: cartItems.map((item) => ({
+            name: item.name,
+            quantity: item.quantity,
+            size: item.size,
+            crust: item.crust,
+          })),
+        },
+      });
 
-  const handleCloseModal = () => {
-    setShowSuccessModal(false);
-    dispatch(clearCart());
-    setForm({ name: '', phone: '', address: '' });
-    setIsSubmitted(false);
-    navigate('/');
+      // Clear the cart upon placing the order
+      dispatch(clearCart());
+    }
   };
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    handleRemoveCoupon();
   };
 
   return (
@@ -226,9 +331,14 @@ export const CartCheckout: React.FC = () => {
                         title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
                       />
                     </div>
-                    <span className={styles.itemPrice}>₹{item.basePrice.toFixed(2)}</span>
+                    <div className={styles.itemOptionsLabel}>
+                      {item.size} | {item.crust}
+                    </div>
+                    <span className={styles.itemPrice}>
+                      ₹{(item.basePrice + item.toppingsPrice + item.sizePrice + item.crustPrice).toFixed(2)}
+                    </span>
 
-                    {item.type === 'custom' && item.selectedToppings.length > 0 && (
+                    {item.selectedToppings.length > 0 && (
                       <div className={styles.customToppingsText}>
                         Toppings:{' '}
                         {item.selectedToppings.map((t) => t.name).join(', ')}
@@ -253,7 +363,7 @@ export const CartCheckout: React.FC = () => {
                   </div>
 
                   <div className={styles.itemTotal}>
-                    ₹{(item.quantity * (item.basePrice + item.toppingsPrice)).toFixed(2)}
+                    ₹{(item.quantity * (item.basePrice + item.toppingsPrice + item.sizePrice + item.crustPrice)).toFixed(2)}
                   </div>
 
                   <button
@@ -267,7 +377,7 @@ export const CartCheckout: React.FC = () => {
               ))}
 
               <div className={styles.subTotalText}>
-                Sub Total : ₹{grandTotal.toFixed(2)}
+                Sub Total : ₹{subTotal.toFixed(2)}
               </div>
             </div>
           )}
@@ -320,7 +430,7 @@ export const CartCheckout: React.FC = () => {
                   value={form.address}
                   onChange={handleInputChange}
                   placeholder="Enter detailed delivery address"
-                  className={`${styles.input} styles.textarea`}
+                  className={`${styles.input} ${styles.textarea}`}
                   rows={3}
                 />
                 {errors.address && <span className={styles.errorText}>{errors.address}</span>}
@@ -330,14 +440,96 @@ export const CartCheckout: React.FC = () => {
         )}
       </div>
 
-      {/* Right Column: Checkout Breakdown */}
+      {/* Right Column: Checkout Breakdown & Coupons */}
       <div className={styles.rightCol}>
+        {/* Promo Code Input Card */}
+        {cartItems.length > 0 && (
+          <div className={styles.card} style={{ marginBottom: '20px' }}>
+            <h2 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Tag size={18} /> Apply Promo Code
+            </h2>
+            <form onSubmit={handleApplyCoupon} className={styles.couponForm}>
+              <input
+                type="text"
+                placeholder="Enter coupon code..."
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                disabled={!!appliedCoupon}
+                className={styles.couponInput}
+              />
+              {appliedCoupon ? (
+                <button type="button" onClick={handleRemoveCoupon} className={styles.couponRemoveBtn}>
+                  Remove
+                </button>
+              ) : (
+                <button type="submit" className={styles.couponApplyBtn}>
+                  Apply
+                </button>
+              )}
+            </form>
+
+            {couponError && <div className={styles.couponErrorMsg}>{couponError}</div>}
+            {couponSuccess && <div className={styles.couponSuccessMsg}>{couponSuccess}</div>}
+
+            <button
+              onClick={() => setShowOffers(!showOffers)}
+              className={styles.toggleOffersBtn}
+            >
+              {showOffers ? 'Hide Offers' : 'View Available Offers'}
+            </button>
+
+            {showOffers && (
+              <div className={styles.offersContainer}>
+                <div
+                  className={styles.offerCard}
+                  onClick={() => {
+                    if (!appliedCoupon) {
+                      setCouponCode('PIZZA20');
+                      setAppliedCoupon('PIZZA20');
+                      setCouponSuccess('PIZZA20 coupon applied! 20% discount added.');
+                    }
+                  }}
+                >
+                  <div className={styles.offerBadge}>PIZZA20</div>
+                  <div className={styles.offerDesc}>Get flat 20% off on your total cart value!</div>
+                </div>
+
+                <div
+                  className={styles.offerCard}
+                  onClick={() => {
+                    if (!appliedCoupon) {
+                      setCouponCode('FREEVEG');
+                      handleApplyCoupon();
+                    }
+                  }}
+                >
+                  <div className={styles.offerBadge}>FREEVEG</div>
+                  <div className={styles.offerDesc}>All vegetarian toppings on DIY/customized pizzas are free.</div>
+                </div>
+
+                <div
+                  className={styles.offerCard}
+                  onClick={() => {
+                    if (!appliedCoupon) {
+                      setCouponCode('BOGO');
+                      handleApplyCoupon();
+                    }
+                  }}
+                >
+                  <div className={styles.offerBadge}>BOGO</div>
+                  <div className={styles.offerDesc}>Buy 1 Get 1 Free (cheapest pizza base free when buying 2+ pizzas).</div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className={styles.card}>
-          <h2 className={styles.cardTitle}>The total amount of</h2>
+          <h2 className={styles.cardTitle}>Bill Summary</h2>
 
           <div className={styles.summaryRow}>
-            <span className={styles.summaryLabel}>Pizza</span>
-            <span className={styles.summaryValue}>₹{pizzaTotal.toFixed(2)}</span>
+            <span className={styles.summaryLabel}>Pizza Base + Crust</span>
+            <span className={styles.summaryValue}>₹{(pizzaTotal + sizeCrustTotal).toFixed(2)}</span>
           </div>
 
           <div className={styles.summaryRow} style={{ flexDirection: 'column', gap: '4px' }}>
@@ -363,7 +555,7 @@ export const CartCheckout: React.FC = () => {
               <div className={styles.ingredientsDropdown}>
                 {aggregatedToppings.length === 0 ? (
                   <div style={{ fontStyle: 'italic', fontSize: '12px' }}>
-                    No custom toppings added.
+                    No toppings added.
                   </div>
                 ) : (
                   aggregatedToppings.map((top) => (
@@ -381,6 +573,15 @@ export const CartCheckout: React.FC = () => {
             )}
           </div>
 
+          {appliedCoupon && discountAmount > 0 && (
+            <div className={styles.summaryRow} style={{ color: 'var(--veg-green)' }}>
+              <span className={styles.summaryLabel} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Percent size={14} /> Coupon ({appliedCoupon})
+              </span>
+              <span className={styles.summaryValue}>-₹{discountAmount.toFixed(2)}</span>
+            </div>
+          )}
+
           <div className={styles.grandTotalRow}>
             <span>Total :</span>
             <span>₹{grandTotal.toFixed(2)}</span>
@@ -396,27 +597,6 @@ export const CartCheckout: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Order Success Modal */}
-      {showSuccessModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <div className={styles.modalIcon}>
-              <CheckCircle2 size={40} />
-            </div>
-            <h3 className={styles.modalTitle}>Order Placed!</h3>
-            <p className={styles.modalDesc}>
-              Thank you, <strong>{form.name}</strong>! Your order totaling{' '}
-              <strong>₹{grandTotal.toFixed(2)}</strong> has been successfully placed.
-              Our chefs are preparing your pizzas, and they will be delivered to{' '}
-              <em>{form.address}</em> within <strong>45 minutes</strong>.
-            </p>
-            <button className={styles.modalCloseBtn} onClick={handleCloseModal}>
-              Go to Home Page
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
